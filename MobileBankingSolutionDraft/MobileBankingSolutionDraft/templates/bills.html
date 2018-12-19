@@ -1,0 +1,62 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<div class="jumbotron" style="background-color:purple; border: 3px solid gold; color:gold">
+    <h2>Pay a Bill</h2>
+    <p class="lead">From here, you can pay your bills. Simply enter the bill code in the text field below, then click "Confirm" to complete the transaction</p>
+    <p>| <a href="{{ url_for('home') }}">Main Menu</a> | <a href="{{ url_for('transfer') }}">Arrange Bank Transfer</a> |</p>
+</div>
+
+<div style="text-align:center" id="google_translate_element"></div>
+
+<script type="text/javascript">
+    function googleTranslateElementInit() {
+        new google.translate.TranslateElement({ pageLanguage: 'en' }, 'google_translate_element');
+    }
+</script>
+
+<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+<p style="padding:10px"></p>
+<table align="center">
+    <tr><td><b>Your Bank: </b></td><td style="padding-left:10px"> United Overseas Bank</td></tr>
+    <tr><td><b>Savings Account: </b></td><td id="bank_bal_1" style="text-align:center; font-size: 24px; font-weight: bold"></td></tr>
+</table>
+<hr />
+
+
+<table align="center">
+    <tr><td><b>Bill Number: </b></td><td style="padding-left:10px"><input type="text" required id="bill_no" /></td></tr>
+    <tr><td style="padding: 10px"></td></tr>
+    <tr><td><b>Amount Payable: </b></td><td style="padding-left:10px"> $XXX.XX</td></tr>
+    <tr><td><b>Payment Due: </b></td><td style="padding-left:10px"> 17/12/2017</td></tr>
+</table>
+
+<p style="padding:10px"></p>
+<p style="text-align:center"><input type="submit" value="Confirm" /></p>
+
+<script src="https://www.gstatic.com/firebasejs/5.7.0/firebase.js"></script>
+<script>
+    // Initializing Firebase Database
+    var config = {
+        apiKey: "AIzaSyDKgCh5vwQBiNSjxS2YHCGCLZfr0YlAvgA",
+        authDomain: "ez-ebanking-test.firebaseapp.com",
+        databaseURL: "https://ez-ebanking-test.firebaseio.com",
+        projectId: "ez-ebanking-test",
+        storageBucket: "",
+        messagingSenderId: "546739130662"
+    };
+    firebase.initializeApp(config);
+
+    var bank_bal_1 = document.getElementById('bank_bal_1');
+    var dbRef_1 = firebase.database().ref().child('savings');
+    dbRef_1.on('value', snap => bank_bal_1.innerText = snap.val());
+
+    var bank_bal_2 = document.getElementById('bank_bal_2');
+    var dbRef_2 = firebase.database().ref().child('current');
+    dbRef_2.on('value', snap => bank_bal_2.innerText = snap.val());
+
+</script>
+
+    {% endblock %}
